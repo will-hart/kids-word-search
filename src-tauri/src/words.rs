@@ -120,6 +120,7 @@ pub fn build_grid(from_list: WordListType, grid_size: usize) -> WordGrid {
         }
     }
 
+    selected_words.sort();
     WordGrid {
         grid,
         words: selected_words,
