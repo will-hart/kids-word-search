@@ -11,6 +11,13 @@ Built using Tauri + Solid + Typescript.
 bun run tauri dev
 ```
 
+## Exporting
+
+I just print out the page using `ctrl+p`, and manually set:
+
+- landscape
+- 49% zoom (for a 20x20 grid on A4 paper YMMV).
+
 ## License
 
 MIT, see `LICENSE` in the repo.
