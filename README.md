@@ -1,7 +1,16 @@
-# Tauri + Solid + Typescript
+# Word search generator
 
-This template should help get you started developing with Tauri, Solid and Typescript in Vite.
+A simple application that generates a word search grid using a silly brute force algorithm
+(that doesn't allow any overlapping words).
 
-## Recommended IDE Setup
+Built using Tauri + Solid + Typescript.
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+## Running
+
+```bash
+bun run tauri dev
+```
+
+## License
+
+MIT, see `LICENSE` in the repo.
