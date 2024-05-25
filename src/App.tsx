@@ -81,15 +81,10 @@ function App() {
       </form>
 
       <div
+        class="grid-container"
         style={{
-          display: "grid",
-          margin: "30px auto 0",
           "grid-template-columns": "72px ".repeat(gridSize()),
           "grid-template-rows": "72px ".repeat(gridSize()),
-          "place-items": "center",
-          gap: 0,
-          border: "1px solid black",
-          background: "#CCCCCC",
         }}
       >
         {grid().grid.map((value: string) => {

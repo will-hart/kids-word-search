@@ -34,6 +34,15 @@
   margin: auto;
 }
 
+.grid-container {
+  display: grid;
+  margin: 30px auto 0;
+  place-items: center;
+  gap: 0;
+  border: 1px solid black;
+  background: #CCCCCC;
+}
+
 .word-list {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
@@ -41,6 +50,24 @@
 }
 
 @media print {
+  .container {
+    padding: 0;
+    margin: 0;
+    flex-direction: row;
+  }
+
+  .grid-container {
+    margin: 0;
+    margin-right: 2rem;
+  }
+
+  .word-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin-bottom: 0;
+    font-size: 1.2em;
+  }
+
   .controls {
     display: none;
   }
