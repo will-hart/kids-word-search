@@ -1,18 +1,29 @@
-import { createSignal } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
 
 const EMPTY_GRID = {
   words: [],
-  grid: []
-}
+  grid: [],
+};
 
 function App() {
   const [grid, setGrid] = createSignal(EMPTY_GRID);
   const [gridSize, setGridSize] = createSignal(12);
 
+  const [wordListOptions, setWordListOptions] = createSignal<string[]>([]);
+  const [selectedWordList, setSelectedWordList] = createSignal("EarlyPrimary");
+
+  const [debugMode, setDebugMode] = createSignal(false);
+
+  createEffect(async () => {
+    setWordListOptions(await invoke("get_word_list_options", {}));
+  });
+
   async function get_grid() {
-    setGrid(await invoke("get_grid", { size: gridSize() }));
+    setGrid(
+      await invoke("get_grid", { list: selectedWordList(), size: gridSize() })
+    );
   }
 
   return (
@@ -24,44 +35,91 @@ function App() {
           get_grid();
         }}
       >
-        <input
-          id="grid-size-input"
-          type="numeric"
-          value={gridSize()}
-          onChange={(e) => {
-            setGridSize(parseInt(e.currentTarget.value, 10))
-            setGrid(EMPTY_GRID)
-          }}
-          placeholder="Enter a grid size"
-        />
-        <button type="submit">Get Grid</button>
+        <span>
+          <label for="selected-list-input">Word List </label>
+          <select
+            id="selected-list-input"
+            onChange={(e) => {
+              setSelectedWordList(e.target.value);
+            }}
+          >
+            {wordListOptions().map((opt) => (
+              <option value={opt}>{opt}</option>
+            ))}
+          </select>
+        </span>
+
+        <span>
+          <label for="grid-size-input">Grid Size </label>
+          <input
+            id="grid-size-input"
+            type="number"
+            value={gridSize()}
+            onChange={(e) => {
+              setGridSize(parseInt(e.currentTarget.value, 10));
+              setGrid(EMPTY_GRID);
+            }}
+            placeholder="Enter a grid size"
+          />
+        </span>
+
+        <span>
+          <label for="use-debug-mode">Debug View</label>
+          <input
+            id="use-debug-mode"
+            type="checkbox"
+            checked={debugMode()}
+            onChange={(e) => setDebugMode(e.target.checked)}
+          />
+        </span>
+
+        <button type="submit" disabled={selectedWordList().length == 0}>
+          Get Grid
+        </button>
       </form>
 
-      <div style={{
-        display: "grid",
-        margin: "30px auto 0",
-        "grid-template-columns": "72px ".repeat(gridSize()),
-        "grid-template-rows": "72px ".repeat(gridSize()),
-        "place-items": "center",
-        "gap": 0,
-        border: "1px solid black",
-        background: "#CCCCCC",
-      }}>{grid().grid.map((value: string) => {
-          return <div style ={{
-            border: "1px solid black",
-            "place-self": "stretch",
-            margin: 0,
-            display: "grid",
-            "place-content": "center",
-            background: value.toUpperCase() === value ? "#AAAAAA": "#FFFFFF",
-            "font-size": "1.3em",
-            "font-weight": "bold",
-            "text-transform": "uppercase"
-          }}><span>{value}</span></div>
-      })}</div>
+      <div
+        style={{
+          display: "grid",
+          margin: "30px auto 0",
+          "grid-template-columns": "72px ".repeat(gridSize()),
+          "grid-template-rows": "72px ".repeat(gridSize()),
+          "place-items": "center",
+          gap: 0,
+          border: "1px solid black",
+          background: "#CCCCCC",
+        }}
+      >
+        {grid().grid.map((value: string) => {
+          return (
+            <div
+              style={{
+                border: "1px solid black",
+                "place-self": "stretch",
+                margin: 0,
+                display: "grid",
+                "place-content": "center",
+                background:
+                  debugMode() && value.toUpperCase() === value
+                    ? "#AAAAAA"
+                    : "#FFFFFF",
+                "font-size": "1.3em",
+                "font-weight": "bold",
+                "text-transform": "uppercase",
+              }}
+            >
+              <span>{value}</span>
+            </div>
+          );
+        })}
+      </div>
 
       <h2>Words</h2>
-      <ul>{grid().words.map((word) => <li>{word}</li>)}</ul>
+      <ul class="word-list">
+        {grid().words.map((word) => (
+          <li>{word}</li>
+        ))}
+      </ul>
     </div>
   );
 }

@@ -28,6 +28,17 @@
   justify-content: center;
 }
 
+.controls {
+  flex-direction: column;
+  width: 30%;
+  margin: auto;
+}
+
+.word-list {
+  width: auto;
+  list-style: none;
+}
+
 @media print {
   .controls {
     display: none;

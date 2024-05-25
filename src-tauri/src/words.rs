@@ -11,6 +11,13 @@ pub enum WordListType {
     LatePrimary,
 }
 
+impl WordListType {
+    pub fn get_options() -> Vec<WordListType> {
+        use WordListType::*;
+        vec![EarlyPrimary, MidPrimary, LatePrimary]
+    }
+}
+
 #[derive(Clone, Debug)]
 enum WordDirection {
     North,
