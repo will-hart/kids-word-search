@@ -3,6 +3,8 @@ use rand::thread_rng;
 use rand::{seq::SliceRandom, Rng};
 use serde::{Deserialize, Serialize};
 
+const MAX_PLACEMENT_FAILURES: usize = 5;
+
 #[derive(Serialize, Deserialize)]
 /// A type of word list, either by theme or age
 pub enum WordListType {
@@ -89,16 +91,17 @@ pub fn build_grid(from_list: WordListType, grid_size: usize) -> WordGrid {
     let mut selected_words = vec![];
 
     // try to fill the grid
-    for word in words.iter() {
+    'wordloop: for word in words.iter() {
         let mut num_failures = 0;
         let mut placed = true;
 
-        while !place_word(&mut rng, &mut grid, grid_size, word) {
+        'placeloop: while !place_word(&mut rng, &mut grid, grid_size, word) {
             num_failures += 1;
+            println!(" -> Failed to place word {num_failures} of {MAX_PLACEMENT_FAILURES}");
 
-            if num_failures > 5 {
+            if num_failures >= MAX_PLACEMENT_FAILURES {
                 placed = false;
-                break;
+                break 'placeloop;
             }
         }
 
@@ -108,10 +111,13 @@ pub fn build_grid(from_list: WordListType, grid_size: usize) -> WordGrid {
 
             // check if our grid is filled up
             if selected_words.len() >= max_words {
-                break;
+                println!("Placed maximum allowed words, stopping placement");
+                break 'wordloop;
             }
         }
     }
+
+    println!("Completed placing words");
 
     // fill the remaining places
     for idx in 0..grid.len() {
@@ -192,7 +198,6 @@ fn place_word(rng: &mut ThreadRng, grid: &mut [char], grid_size: usize, word: &s
     println!(" -> Word fits, placing");
     for char in word.chars() {
         grid[start_pos] = char.clone();
-        println!("{start_pos} + {pos_delta}");
         start_pos = start_pos.checked_add_signed(pos_delta).unwrap();
     }
 
