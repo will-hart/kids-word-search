@@ -54,6 +54,8 @@ function App() {
           <input
             id="grid-size-input"
             type="number"
+            min={5}
+            max={20}
             value={gridSize()}
             onChange={(e) => {
               setGridSize(parseInt(e.currentTarget.value, 10));
@@ -114,12 +116,14 @@ function App() {
         })}
       </div>
 
-      <h2>Words</h2>
-      <ul class="word-list">
-        {grid().words.map((word) => (
-          <li>{word}</li>
-        ))}
-      </ul>
+      <div>
+        <h2>Words</h2>
+        <div class="word-list">
+          {grid().words.map((word) => (
+            <div>{word}</div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

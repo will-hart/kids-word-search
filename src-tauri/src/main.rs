@@ -7,7 +7,7 @@ mod words;
 
 #[tauri::command]
 fn get_grid(list: WordListType, size: usize) -> WordGrid {
-    build_grid(list, size.clamp(5, 15))
+    build_grid(list, size.clamp(5, 20))
 }
 
 #[tauri::command]

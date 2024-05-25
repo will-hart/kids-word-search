@@ -35,8 +35,9 @@
 }
 
 .word-list {
-  width: auto;
-  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  margin-bottom: 1em;
 }
 
 @media print {

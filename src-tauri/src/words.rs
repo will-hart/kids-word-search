@@ -9,12 +9,13 @@ pub enum WordListType {
     EarlyPrimary,
     MidPrimary,
     LatePrimary,
+    Dragons,
 }
 
 impl WordListType {
     pub fn get_options() -> Vec<WordListType> {
         use WordListType::*;
-        vec![EarlyPrimary, MidPrimary, LatePrimary]
+        vec![EarlyPrimary, MidPrimary, LatePrimary, Dragons]
     }
 }
 
@@ -52,6 +53,7 @@ fn get_words(from_list: WordListType, max_word_length: usize) -> Vec<String> {
         WordListType::EarlyPrimary => include_str!("../data/01_early_primary.txt"),
         WordListType::MidPrimary => include_str!("../data/02_late_primary.txt"),
         WordListType::LatePrimary => include_str!("../data/03_early_secondary.txt"),
+        WordListType::Dragons => include_str!("../data/dragons.txt"),
     }
     .lines()
     .filter_map(|s| {
@@ -78,7 +80,8 @@ pub fn build_grid(from_list: WordListType, grid_size: usize) -> WordGrid {
     let mut grid = vec![' '; grid_size * grid_size];
     let mut words = get_words(from_list, grid_size);
     words.shuffle(&mut rng);
-    let max_words = grid_size;
+
+    let max_words = grid_size * 2;
 
     let mut selected_words = vec![];
 
