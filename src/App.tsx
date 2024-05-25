@@ -12,14 +12,13 @@ function App() {
   const [gridSize, setGridSize] = createSignal(12);
 
   async function get_grid() {
-    // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
     setGrid(await invoke("get_grid", { size: gridSize() }));
   }
 
   return (
     <div class="container">
       <form
-        class="row"
+        class="row controls"
         onSubmit={(e) => {
           e.preventDefault();
           get_grid();
@@ -47,16 +46,17 @@ function App() {
         "gap": 0,
         border: "1px solid black",
         background: "#CCCCCC",
-      }}>{grid().grid.map((value) => {
+      }}>{grid().grid.map((value: string) => {
           return <div style ={{
             border: "1px solid black",
             "place-self": "stretch",
             margin: 0,
             display: "grid",
             "place-content": "center",
-            background: "#FFFFFF",
+            background: value.toUpperCase() === value ? "#AAAAAA": "#FFFFFF",
             "font-size": "1.3em",
             "font-weight": "bold",
+            "text-transform": "uppercase"
           }}><span>{value}</span></div>
       })}</div>
 
