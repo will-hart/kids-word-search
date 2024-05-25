@@ -90,19 +90,13 @@ function App() {
         {grid().grid.map((value: string) => {
           return (
             <div
+              class="word-grid-item"
               style={{
-                border: "1px solid black",
-                "place-self": "stretch",
-                margin: 0,
-                display: "grid",
-                "place-content": "center",
+               
                 background:
                   debugMode() && value.toUpperCase() === value
                     ? "#AAAAAA"
-                    : "#FFFFFF",
-                "font-size": "1.3em",
-                "font-weight": "bold",
-                "text-transform": "uppercase",
+                    : "#FFFFFF", 
               }}
             >
               <span>{value}</span>
