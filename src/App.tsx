@@ -112,7 +112,7 @@ function App() {
       </div>
 
       <div>
-        <h2>Words</h2>
+        <h2>Words: {selectedWordList()}</h2>
         <div class="word-list">
           {grid().words.map((word) => (
             <div>{word}</div>

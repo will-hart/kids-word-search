@@ -10,12 +10,14 @@ pub enum WordListType {
     MidPrimary,
     LatePrimary,
     Dragons,
+    /// Words picked by my kids
+    KidsChoice,
 }
 
 impl WordListType {
     pub fn get_options() -> Vec<WordListType> {
         use WordListType::*;
-        vec![EarlyPrimary, MidPrimary, LatePrimary, Dragons]
+        vec![EarlyPrimary, MidPrimary, LatePrimary, Dragons, KidsChoice]
     }
 }
 
@@ -54,13 +56,14 @@ fn get_words(from_list: WordListType, max_word_length: usize) -> Vec<String> {
         WordListType::MidPrimary => include_str!("../data/02_late_primary.txt"),
         WordListType::LatePrimary => include_str!("../data/03_early_secondary.txt"),
         WordListType::Dragons => include_str!("../data/dragons.txt"),
+        WordListType::KidsChoice => include_str!("../data/kids_choice.txt"),
     }
     .lines()
     .filter_map(|s| {
         let trimmed = s.trim();
         if trimmed.starts_with("--")
             || trimmed.is_empty()
-            || trimmed.len() < 3
+            || trimmed.len() < 2
             || trimmed.len() > max_word_length
         {
             None
